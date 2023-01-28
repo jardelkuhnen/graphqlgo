@@ -1,0 +1,10 @@
+services:
+
+  mongo:
+    image: mongo
+    hostname: mongo
+    ports:
+      - "27017:27017"
+    expose:
+      - 27017
+    container_name: mongo

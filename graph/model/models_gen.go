@@ -2,19 +2,27 @@
 
 package model
 
-type NewTodo struct {
-	Text   string `json:"text"`
-	UserID string `json:"userId"`
+type CreateJobListingInput struct {
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	Company     string `json:"company"`
+	URL         string `json:"url"`
 }
 
-type Todo struct {
-	ID   string `json:"id"`
-	Text string `json:"text"`
-	Done bool   `json:"done"`
-	User *User  `json:"user"`
+type DeleteJobResponse struct {
+	DeletedJobID string `json:"deletedJobId"`
 }
 
-type User struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
+type JobListing struct {
+	ID          string `json:"id"`
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	Company     string `json:"company"`
+	URL         string `json:"url"`
+}
+
+type UpdateJobListingInput struct {
+	Title       *string `json:"title"`
+	Description *string `json:"description"`
+	URL         *string `json:"url"`
 }
