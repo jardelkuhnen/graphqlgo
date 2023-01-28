@@ -1,0 +1,134 @@
+{
+	"info": {
+		"_postman_id": "ce57c024-4b7e-4fc8-bed1-9880615cf917",
+		"name": "GrpahQL Jobs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get All jobs",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query GetAllJobs {\n    jobs {\n        _id\n        title\n        description\n        company\n        url\n    }\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/query",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"query"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Job By ID",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query GetJob($id: ID!) {\n    job(id: $id) {\n        _id\n        title\n        url\n        company\n        description\n    }\n}",
+						"variables": "{\n    \"id\": \"63d530abe7adc0843b5e8031\"\n}"
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/query",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"query"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Job",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation CreateJobListing($input: CreateJobListingInput!) {\n    createJobListing(input:$input) {\n        _id\n        title\n        description\n        company\n        url\n    }\n}",
+						"variables": "{\n    \"input\": {\n        \"title\": \"Senior Software Developer\",\n        \"description\": \"Develop systens on Golang language\",\n        \"company\": \"Meli\",\n        \"url\": \"www.meli.com\"\n    }\n}"
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/query",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"query"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Job",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation UpdateJob($id: ID!, $input: UpdateJobListingInput!) {\n    updateJobListing(id:$id, input:$input) {\n        _id\n        title\n        description\n        company\n        url\n    }\n}",
+						"variables": "{\n    \"id\": \"63d530abe7adc0843b5e8031\",\n    \"input\": {\n        \"description\": \"Senior Software Developer II\"\n    }\n}"
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/query",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"query"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Job",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation DeleteQuery($id: ID!) {\n    deleteJobListing(id:$id) {\n        deletedJobId\n    }\n}",
+						"variables": "{\n    \"id\":\"63d52f0035e87c1c96ce253c\"\n}"
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/query",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"query"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
