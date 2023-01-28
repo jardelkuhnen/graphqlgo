@@ -12,17 +12,17 @@ import (
 	"time"
 )
 
-var connectionString string = "mongodb://localhost:27017"
+var connectionString = "mongodb://localhost:27017"
 
 type DB struct {
-	client *mongo.Client
+	client     *mongo.Client
+	collection *mongo.Collection
 }
 
 func (db *DB) CreateJobListing(jobInfo model.CreateJobListingInput) *model.JobListing {
-	jobCollec := db.client.Database("graphql-job-board").Collection("jobs")
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
-	inserg, err := jobCollec.InsertOne(ctx, bson.M{"title": jobInfo.Title, "description": jobInfo.Description, "url": jobInfo.URL, "company": jobInfo.Company})
+	inserg, err := db.collection.InsertOne(ctx, bson.M{"title": jobInfo.Title, "description": jobInfo.Description, "url": jobInfo.URL, "company": jobInfo.Company})
 
 	if err != nil {
 		log.Fatal(err)
@@ -34,7 +34,6 @@ func (db *DB) CreateJobListing(jobInfo model.CreateJobListingInput) *model.JobLi
 }
 
 func (db *DB) UpdateJobListing(jobId string, jobInfo model.UpdateJobListingInput) *model.JobListing {
-	jobCollec := db.client.Database("graphql-job-board").Collection("jobs")
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
@@ -54,7 +53,7 @@ func (db *DB) UpdateJobListing(jobId string, jobInfo model.UpdateJobListingInput
 	filter := bson.M{"_id": _id}
 	update := bson.M{"$set": updateJobInfo}
 
-	results := jobCollec.FindOneAndUpdate(ctx, filter, update, options.FindOneAndUpdate().SetReturnDocument(1))
+	results := db.collection.FindOneAndUpdate(ctx, filter, update, options.FindOneAndUpdate().SetReturnDocument(1))
 
 	var jobListing model.JobListing
 
@@ -67,13 +66,12 @@ func (db *DB) UpdateJobListing(jobId string, jobInfo model.UpdateJobListingInput
 }
 
 func (db *DB) DeleteJobListing(jobId string) *model.DeleteJobResponse {
-	jobCollec := db.client.Database("graphql-job-board").Collection("jobs")
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
 	_id, _ := primitive.ObjectIDFromHex(jobId)
 	filter := bson.M{"_id": _id}
-	_, err := jobCollec.DeleteOne(ctx, filter)
+	_, err := db.collection.DeleteOne(ctx, filter)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -81,11 +79,10 @@ func (db *DB) DeleteJobListing(jobId string) *model.DeleteJobResponse {
 }
 
 func (db *DB) GetJobs() []*model.JobListing {
-	jobCollect := db.client.Database("graphql-job-board").Collection("jobs")
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 	var jobListings []*model.JobListing
-	cursor, err := jobCollect.Find(ctx, bson.D{})
+	cursor, err := db.collection.Find(ctx, bson.D{})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -98,14 +95,13 @@ func (db *DB) GetJobs() []*model.JobListing {
 }
 
 func (db *DB) GetJob(id string) *model.JobListing {
-	jobCollec := db.client.Database("graphql-job-board").Collection("jobs")
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
 	_id, _ := primitive.ObjectIDFromHex(id)
 	filter := bson.M{"_id": _id}
 	var jobListing model.JobListing
-	err := jobCollec.FindOne(ctx, filter).Decode(&jobListing)
+	err := db.collection.FindOne(ctx, filter).Decode(&jobListing)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -131,7 +127,14 @@ func Connect() *DB {
 		log.Fatal(err)
 	}
 
+	collection := client.Database("graphql-job-board").Collection("jobs")
+
+	if collection == nil {
+		log.Fatal("Could not get collection job")
+	}
+
 	return &DB{
-		client: client,
+		client:     client,
+		collection: collection,
 	}
 }
