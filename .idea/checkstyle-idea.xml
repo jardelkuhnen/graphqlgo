@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CheckStyle-IDEA" serialisationVersion="2">
+    <checkstyleVersion>10.3</checkstyleVersion>
+    <scanScope>JavaOnlyWithTests</scanScope>
+    <option name="activeLocationIds">
+      <option value="31cc38b6-8dac-4c64-8577-b8ea4ffb750f" />
+      <option value="a5a75b62-3cfb-4d7f-90aa-ae24d9d4c776" />
+      <option value="e909845a-c7f7-44b3-8e45-f76aaddbb159" />
+    </option>
+    <option name="locations">
+      <list>
+        <ConfigurationLocation id="a5a75b62-3cfb-4d7f-90aa-ae24d9d4c776" type="BUNDLED" scope="All" description="Sun Checks">(bundled)</ConfigurationLocation>
+        <ConfigurationLocation id="31cc38b6-8dac-4c64-8577-b8ea4ffb750f" type="BUNDLED" scope="All" description="Google Checks">
+          (bundled)
+          <option name="properties">
+            <map>
+              <entry key="org.checkstyle.google.suppressionfilter.config" value="" />
+              <entry key="org.checkstyle.google.suppressionxpathfilter.config" value="" />
+            </map>
+          </option>
+        </ConfigurationLocation>
+        <ConfigurationLocation id="e909845a-c7f7-44b3-8e45-f76aaddbb159" type="LOCAL_FILE" scope="All" description="MeliStyle">$USER_HOME$/workspace/fury_shipping-logistic-centers-api/.code_quality/checkstyle_rules.xml</ConfigurationLocation>
+      </list>
+    </option>
+  </component>
+</project>
